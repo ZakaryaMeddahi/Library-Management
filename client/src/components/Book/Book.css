@@ -1,0 +1,31 @@
+.book {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.book:hover {
+  border-color: #535bf2;
+  transition: 0.5s;
+}
+
+.book-info {
+  display: flex;
+}
+
+.book-cover img {
+  height: 150px;
+  margin-right: 20px;
+}
+
+.edit-button {
+  color: green;
+}
+
+.delete-button {
+  color: red;
+  margin-left: 20px;
+}

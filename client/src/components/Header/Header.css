@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-bar {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  padding: 7px;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+}
+
+.search-button {
+  cursor: pointer;
+}
+
+input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 5px 7px;
+  width: 300px;
+}
+
+button {
+  padding: 7px 10px;
+  border-radius: 2px;
+}
