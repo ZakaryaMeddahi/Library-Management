@@ -9,19 +9,22 @@ export class BooksService {
       id: 1,
       title: 'The Lord of the Rings',
       author: 'J.R.R Tolkien',
-      adherentId: 123,
+      imgUrl: 'https://i.thenile.io/r1000/9780618645619.jpg?r=5eb588fe0f142',
+      adherent: 'Zakarya',
     },
     {
       id: 2,
       title: 'The Lord of the Rings',
       author: 'J.R.R Tolkien',
-      adherentId: 124,
+      imgUrl: 'https://i.thenile.io/r1000/9780618645619.jpg?r=5eb588fe0f142',
+      adherent: 'Zakarya',
     },
   ];
 
   createBook(@Body() createBookDto: CreateBookDto) {
     const id = Date.now();
     const newBook = { id, ...createBookDto };
+    this.books.push(newBook);
     return newBook;
   }
 
@@ -34,9 +37,15 @@ export class BooksService {
   }
 
   updateBook(id: number, updateBookDto: UpdateBookDto) {
-    const index = this.books.findIndex((book) => book.id === id);
+    console.log('Book ID: ', id);
+    console.log('Books: ', this.books);
+    const index = this.books.findIndex((book) => book.id == id);
+    console.log('Book Index: ', index);
+    console.log('updateBookDto: ', updateBookDto);
     const updatedBook = { ...this.books[index], ...updateBookDto };
+    console.log('This Book: ', this.books[index]);
     this.books[index] = updatedBook;
+    console.log('Updated Book: ', updatedBook);
     return updatedBook;
   }
 
