@@ -21,11 +21,16 @@
   margin-right: 20px;
 }
 
+.book-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .edit-button {
   color: green;
 }
 
 .remove-button {
   color: red;
-  margin-left: 20px;
 }

@@ -5,6 +5,9 @@ export type BookDocument = HydratedDocument<Book>;
 
 export class Book {
   @Prop()
+  _id: number;
+
+  @Prop()
   title: string;
 
   @Prop()
@@ -14,7 +17,7 @@ export class Book {
   imgUrl: string;
 
   @Prop()
-  adherent: string;
+  status: string;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
