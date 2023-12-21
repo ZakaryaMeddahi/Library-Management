@@ -4,11 +4,13 @@ import './Table.css';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-function Table({ books, setBooks }) {
+function Table({ books, setBooks, bookSearch }) {
   useEffect(() => {
     const getBooks = async () => {
       try {
-        const response = await axios('http://localhost:3000/books');
+        const response = await axios(
+          `http://localhost:3000/books?title=${bookSearch}`
+        );
         const books = response.data;
         setBooks(books);
       } catch (error) {
@@ -16,7 +18,7 @@ function Table({ books, setBooks }) {
       }
     };
     getBooks();
-  }, []);
+  }, [bookSearch]);
 
   console.log('Books: ', books);
 
@@ -34,6 +36,7 @@ function Table({ books, setBooks }) {
 Table.propTypes = {
   books: PropTypes.array.isRequired,
   setBooks: PropTypes.func.isRequired,
+  bookSearch: PropTypes.string,
 };
 
 export default Table;

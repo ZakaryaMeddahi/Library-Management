@@ -5,11 +5,12 @@ import Table from './components/Table/Table';
 
 function App() {
   const [books, setBooks] = useState([]);
+  const [bookSearch, setBookSearch] = useState('');
   return (
     <div className="main">
       <h2>Library Management</h2>
-      <Header books={books} setBooks={setBooks} />
-      <Table books={books} setBooks={setBooks} />
+      <Header books={books} setBooks={setBooks} setBookSearch={setBookSearch} />
+      <Table books={books} setBooks={setBooks} bookSearch={bookSearch} />
     </div>
   );
 }

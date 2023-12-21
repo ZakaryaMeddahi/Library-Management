@@ -11,7 +11,7 @@
   position: absolute;
   width: 240px;
   height: auto;
-  top: calc(50% - 50px);
+  top: calc(50% - 100px);
   left: calc(50% - 120px);
   background-color: #343434;
   padding: 25px;
@@ -20,7 +20,7 @@
   z-index: 9999;
 }
 
-.popup h3 {
+.delete-popup h3 {
   color: #535bf2;
   margin-top: 0;
   margin-bottom: 30px;
@@ -35,9 +35,10 @@
 .delete-button {
   background-color: red;
   color: #fff;
+  text-transform: capitalize;
 }
 
 .cancel-button {
-  background-color: #fff;
   color: red;
+  text-transform: capitalize;
 }

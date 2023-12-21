@@ -24,7 +24,7 @@ function Book({ book, books, setBooks }) {
     <div className="book">
       <div className="book-info">
         <div className="book-cover">
-          <img src={book.imgUrl} alt="Clean Code" />
+          <img src={book.imgUrl} alt="Book Cover" />
         </div>
         <div>
           <h3 className="title">{book.title}</h3>

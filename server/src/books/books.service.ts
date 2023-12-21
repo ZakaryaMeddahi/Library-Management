@@ -7,17 +7,27 @@ export class BooksService {
   private books = [
     {
       id: 1,
-      title: 'The Lord of the Rings',
-      author: 'J.R.R Tolkien',
-      imgUrl: 'https://i.thenile.io/r1000/9780618645619.jpg?r=5eb588fe0f142',
+      title: 'Cracking the coding interview',
+      author: 'Gayle Laakmann McDowell',
+      imgUrl:
+        'https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61mIq2iJUXL._AC_UF1000,1000_QL80_.jpg',
       adherent: 'Zakarya',
     },
     {
       id: 2,
-      title: 'The Lord of the Rings',
-      author: 'J.R.R Tolkien',
-      imgUrl: 'https://i.thenile.io/r1000/9780618645619.jpg?r=5eb588fe0f142',
-      adherent: 'Zakarya',
+      title: 'Clean Code',
+      author: 'Robert C. Martin',
+      imgUrl:
+        'https://m.media-amazon.com/images/I/51E2055ZGUL._AC_UF894,1000_QL80_.jpg',
+      adherent: 'Sid Ahmed',
+    },
+    {
+      id: 3,
+      title: 'Cracking the coding interview',
+      author: 'Gayle Laakmann McDowell',
+      imgUrl:
+        'https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61mIq2iJUXL._AC_UF1000,1000_QL80_.jpg',
+      adherent: 'Alaa',
     },
   ];
 
@@ -28,8 +38,16 @@ export class BooksService {
     return newBook;
   }
 
-  findAllBooks() {
-    return this.books;
+  findAllBooks(title: string) {
+    console.log('Title: ', title);
+
+    if (title === '') {
+      return this.books;
+    }
+    const filteredBooks = this.books.filter((book) =>
+      book.title.toLowerCase().match(title),
+    );
+    return filteredBooks;
   }
 
   findSingleBook(id: number) {

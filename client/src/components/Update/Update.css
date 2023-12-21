@@ -50,6 +50,7 @@
 
 .update-button {
   color: green;
+  text-transform: capitalize;
 }
 
 .cancel-button {
