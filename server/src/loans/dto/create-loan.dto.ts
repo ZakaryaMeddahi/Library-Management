@@ -1,1 +1,6 @@
-export class CreateLoanDto {}
+export class CreateLoanDto {
+  bookId: string;
+  adherentId: number;
+  startDate: Date;
+  endDate: Date;
+}

@@ -1,79 +1,116 @@
-import { Body, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Book } from './schemas/book.schema';
+
+enum status {
+  available = 'available',
+  borrowed = 'borrowed',
+}
 
 @Injectable()
 export class BooksService {
-  private books = [
-    {
-      id: 1,
-      title: 'Cracking the coding interview',
-      author: 'Gayle Laakmann McDowell',
-      imgUrl:
-        'https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61mIq2iJUXL._AC_UF1000,1000_QL80_.jpg',
-      adherent: 'Zakarya',
-    },
-    {
-      id: 2,
-      title: 'Clean Code',
-      author: 'Robert C. Martin',
-      imgUrl:
-        'https://m.media-amazon.com/images/I/51E2055ZGUL._AC_UF894,1000_QL80_.jpg',
-      adherent: 'Sid Ahmed',
-    },
-    {
-      id: 3,
-      title: 'Cracking the coding interview',
-      author: 'Gayle Laakmann McDowell',
-      imgUrl:
-        'https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61mIq2iJUXL._AC_UF1000,1000_QL80_.jpg',
-      adherent: 'Alaa',
-    },
-  ];
-
   constructor(@InjectModel('Book') private readonly bookModel: Model<Book>) {}
 
-  createBook(@Body() createBookDto: CreateBookDto) {
-    const id = Date.now();
-    const newBook = { id, ...createBookDto };
-    this.books.push(newBook);
-    return newBook;
-  }
-
-  findAllBooks(title: string) {
-    console.log('Title: ', title);
-
-    if (title === '') {
-      return this.books;
+  async findAllBooks(title: string) {
+    try {
+      if (title === '') {
+        const books = await this.bookModel.find();
+        return books;
+      }
+      const filteredBooks = await this.bookModel
+        .find()
+        .where('title')
+        .regex(title);
+      return filteredBooks;
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-    const filteredBooks = this.books.filter((book) =>
-      book.title.toLowerCase().match(title),
-    );
-    return filteredBooks;
   }
 
-  findSingleBook(id: number) {
-    return this.books.find((book) => book.id === id);
+  async findSingleBook(id: string) {
+    try {
+      if (!Types.ObjectId.isValid(id)) {
+        throw new BadRequestException(`Invalid ID format: ${id}`);
+      }
+
+      const book = await this.bookModel.findById(id);
+
+      if (!book) {
+        throw new NotFoundException(`Book with ID ${id} not found`);
+      }
+
+      return book;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
-  updateBook(id: number, updateBookDto: UpdateBookDto) {
-    console.log('Book ID: ', id);
-    console.log('Books: ', this.books);
-    const index = this.books.findIndex((book) => book.id == id);
-    console.log('Book Index: ', index);
-    console.log('updateBookDto: ', updateBookDto);
-    const updatedBook = { ...this.books[index], ...updateBookDto };
-    console.log('This Book: ', this.books[index]);
-    this.books[index] = updatedBook;
-    console.log('Updated Book: ', updatedBook);
-    return updatedBook;
+  async createBook(createBookDto: CreateBookDto) {
+    try {
+      const newBook = { ...createBookDto, status: status.available };
+      const bookDocument = new this.bookModel(newBook);
+      await bookDocument.save();
+      return bookDocument;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
-  removeBook(id: number) {
-    this.books = this.books.filter((book) => book.id !== id);
-    return this.books;
+  async updateBook(id: string, updateBookDto: UpdateBookDto) {
+    try {
+      if (!Types.ObjectId.isValid(id)) {
+        throw new BadRequestException(`Invalid ID format: ${id}`);
+      }
+
+      const updatedBook = await this.bookModel.findByIdAndUpdate(
+        id,
+        { ...updateBookDto },
+        { new: true },
+      );
+
+      if (!updatedBook) {
+        throw new NotFoundException(`Book with ID ${id} not found`);
+      }
+
+      return updatedBook;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async removeBook(id: string) {
+    try {
+      if (!Types.ObjectId.isValid(id)) {
+        throw new BadRequestException(`Invalid ID format: ${id}`);
+      }
+
+      const book = await this.bookModel.findById(id);
+
+      if (!book) {
+        throw new NotFoundException(`Book with ID ${id} not found`);
+      }
+
+      await book.deleteOne();
+      const message = {
+        message: `Book with ID ${id} has been deleted successfully`,
+        success: 'OK',
+        statusCode: 200,
+      };
+      return message;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }

@@ -1,8 +1,9 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type AdherentDocument = HydratedDocument<Adherent>;
 
+@Schema()
 export class Adherent {
   @Prop()
   _id: number;
@@ -13,7 +14,7 @@ export class Adherent {
   @Prop()
   lastName: string;
 
-  @Prop()
+  @Prop({ default: 0 })
   borrowingCount: number;
 }
 

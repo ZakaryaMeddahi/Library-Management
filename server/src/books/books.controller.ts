@@ -17,27 +17,30 @@ export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
-  createBook(@Body() createBookDto: CreateBookDto) {
-    return this.booksService.createBook(createBookDto);
+  async createBook(@Body() createBookDto: CreateBookDto) {
+    return await this.booksService.createBook(createBookDto);
   }
 
   @Get()
-  getAllBooks(@Query('title') title: string) {
-    return this.booksService.findAllBooks(title);
+  async getAllBooks(@Query('title') title: string) {
+    return await this.booksService.findAllBooks(title);
   }
 
   @Get(':id')
-  getSingleBook(@Param('id') id: string) {
-    return this.booksService.findSingleBook(+id);
+  async getSingleBook(@Param('id') id: string) {
+    return await this.booksService.findSingleBook(id);
   }
 
   @Patch(':id')
-  updateBook(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    return this.booksService.updateBook(+id, updateBookDto);
+  async updateBook(
+    @Param('id') id: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ) {
+    return await this.booksService.updateBook(id, updateBookDto);
   }
 
   @Delete(':id')
-  removeBook(@Param('id') id: string) {
-    return this.booksService.removeBook(+id);
+  async removeBook(@Param('id') id: string) {
+    return await this.booksService.removeBook(id);
   }
 }
